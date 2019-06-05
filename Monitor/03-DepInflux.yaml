@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: dep-influxdb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dep-influxdb
+  template:
+    metadata: 
+      labels:
+        app: dep-influxdb
+    spec: 
+      containers: 
+        - name: influx
+          image: influxdb:1.7-alpine
+          env:
+            - name: INFLUXDB_DB
+              valueFrom: 
+                configMapKeyRef:
+                  name: monitor-conf
+                  key: INFLUXDB_DB 
+            - name: INFLUXDB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: monitor-conf
+                  key: INFLUXDB_USER
+            - name: INFLUXDB_USER_PASSWORD
+              valueFrom: 
+                secretKeyRef:
+                  name: monitor-conf
+                  key: SECRET
+          ports:
+            - name: http
+              protocol: TCP
+              containerPort: 8086
+          volumeMounts:
+            - name: influx-vol
+              mountPath: /var/lib/influxdb
+          resources:  
+            limits:
+              cpu: 300m
+              memory: 200Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi
+
+      volumes:
+        - name: influx-vol
+          persistentVolumeClaim:
+            claimName: claim-influx 

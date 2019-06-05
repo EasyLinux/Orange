@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: dep-telegraf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dep-telegraf
+  template:
+    metadata: 
+      labels:
+        app: dep-telegraf
+    spec: 
+      containers: 
+        - name: telegraf
+          image: easylinux/kubernetes:telegraf
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: INFLUXDB_NAME
+              value: "db0"
+            - name: INFLUXDB_USER
+              value: "grafana"
+            - name: INFLUXDB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: monitor-conf
+                  key: SECRET
+            - name: INFLUXDB_HOST
+              value: "svc-influx" 
+            - name: INFLUXDB_PORT
+              value: "8086"
+          volumeMounts:
+            - name: docker
+              mountPath: /var/run/docker.sock
+            - name: conf
+              mountPath: /etc/telegraf
+
+      volumes:
+         - name: docker
+           hostPath:
+             path: /var/run/docker.sock
+             type: Socket
+         - name: conf
+           hostPath:
+             path: /data/telegraf
+             type: Directory
+

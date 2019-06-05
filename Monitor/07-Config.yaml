@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: monitor-conf
+data:
+  INFLUXDB_NAME: "db0"
+  INFLUXDB_USER: "grafana"
+  INFLUXDB_HOST: "svc-influx"
+  INFLUXDB_PORT: "8086"
+

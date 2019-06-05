@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: dep-grafana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dep-grafana
+  template:
+    metadata: 
+      labels:
+        app: dep-grafana
+    spec: 
+      containers: 
+        - name: grafana
+          image: easylinux/kubernetes:grafana 
+          ports:
+            - name: http 
+              containerPort: 3000 
+          volumeMounts:
+            - name: vol-grafana
+              mountPath: /var/lib/grafana
+
+      volumes:
+        - name: vol-grafana
+          persistentVolumeClaim:
+            claimName: claim-grafana

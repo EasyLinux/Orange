@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: dep-registry
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dep-registry
+  template:
+    metadata: 
+      labels:
+        app: dep-registry
+    spec: 
+      containers: 
+        - name: registry
+          image: registry
+          #          env:
+          #  - name: INFLUXDB_DB
+          #    valueFrom: 
+          #      configMapKeyRef:
+          #        name: monitor-conf
+          #        key: INFLUXDB_DB 
+          ports:
+            - name: http
+              protocol: TCP
+              containerPort: 5000
+          volumeMounts:
+            - name: registry-vol
+              mountPath: /var/lib/registry
+          resources:  
+            limits:
+              cpu: 300m
+              memory: 200Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi
+
+      volumes:
+        - name: registry-vol
+          persistentVolumeClaim:
+            claimName: claim-registry 
