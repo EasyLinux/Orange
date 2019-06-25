@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: monitor
+    sub: influx
+  name: influx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: monitor
+      sub: influx
+  template:
+    metadata:
+      labels:
+        app: monitor
+        sub: influx
+      name: influx
+    spec:
+      containers:
+      - name: influx
+        env:
+        - name: INFLUXDB_DB
+          value: monitor
+        - name: INFLUXDB_USER
+          value: monitor
+        - name: INFLUXDB_USER_PASSWORD
+          value: Secr3t
+        image: easylinux/kubernetes:influxdb
+        imagePullPolicy: IfNotPresent
+        ports:
+          - name: http
+            containerPort: 8086
+

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: monitor
+    sub: grafana
+  name: grafana
+spec:
+  containers:
+    - image: easylinux/kubernetes:grafana
+      imagePullPolicy: IfNotPresent
+      name: grafana
+      ports:
+        - name: http
+          containerPort: 3000

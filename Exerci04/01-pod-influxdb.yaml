@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: monitor
+  name: influx
+spec:
+  containers:
+    - image: easylinux/kubernetes:influxdb
+      imagePullPolicy: IfNotPresent
+      name: influxdb
+      env:
+        - name: INFLUXDB_DB
+          value: monitor
+        - name: INFLUXDB_USER
+          value: monitor
+        - name: INFLUXDB_USER_PASSWORD
+          value: Secr3t
+

@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: monitor
+    sub: telegraf
+  name: telegraf
+spec:
+  containers:
+    - image: easylinux/kubernetes:telegraf
+      imagePullPolicy: IfNotPresent
+      name: telegraf
+      env:
+        - name: INFLUXDB_NAME
+          value: monitor
+        - name: INFLUXDB_USER
+          value: monitor
+        - name: INFLUXDB_PASSWORD
+          value: Secr3t
+        - name: INFLUXDB_HOST
+          value: 172.17.0.9
+        - name: INFLUXDB_PORT
+          value: "8086"

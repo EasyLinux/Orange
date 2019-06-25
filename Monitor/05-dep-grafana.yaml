@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: monitor
+    sub: grafana
+  name: grafana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: monitor
+      sub: grafana
+  template:
+    metadata:
+      labels:
+        app: monitor
+        sub: grafana
+      name: grafana
+    spec:
+      containers:
+      - name: grafana
+        image: easylinux/kubernetes:grafana
+        imagePullPolicy: IfNotPresent
+        ports:
+          - name: http
+            protocol: TCP
+            containerPort: 3000
+
