@@ -26,4 +26,17 @@ spec:
           - name: http
             protocol: TCP
             containerPort: 3000
+        volumeMounts:
+          - name: vol-grafana
+            mountPath: /var/lib/grafana
+
+      volumes:
+        - name: vol-grafana
+          persistentVolumeClaim:
+            claimName: claim-grafana
+
+
+
+
+
 

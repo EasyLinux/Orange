@@ -32,4 +32,11 @@ spec:
         ports:
           - name: http
             containerPort: 8086
+        volumeMounts:
+          - name: vol-influx
+            mountPath: /var/lib/influxdb
 
+      volumes:
+        - name: vol-influx
+          persistentVolumeClaim:
+            claimName: claim-influx
