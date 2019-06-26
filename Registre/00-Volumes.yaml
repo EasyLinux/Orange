@@ -5,7 +5,7 @@ metadata:
   labels:
     app: registry
 spec:
-  storageClassName: standard
+  storageClassName: nfs-service
   accessModes:
     - ReadWriteOnce
   volumeMode: Filesystem
